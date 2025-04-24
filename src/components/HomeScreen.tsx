@@ -8,7 +8,7 @@ const HomeScreen = () => {
   const [currentScreen, setCurrentScreen] = useState('add'); // 'add' or 'view'
 
   return (
-    <SafeAreaView style={s`flex-1 bg-[#f5f5f5]`}>
+    <SafeAreaView style={s`flex-1 bg-white`}>
     <View style={s`flex-row bg-white shadow shadow-black shadow-opacity-10 shadow-radius-2 elevation-2`}>
       <TouchableOpacity 
         style={s`flex-1 p-4 items-center justify-center border-b-2 ${currentScreen === 'add' ? 'border-b-[#a3b9c9]' : 'border-b-transparent'}`}
