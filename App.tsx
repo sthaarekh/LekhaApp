@@ -6,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
+
 const tabConfig=[
   {
     name:"Home",
@@ -46,7 +47,7 @@ const App = () => {
             paddingTop:0,
           }
   });
-  
+
   return (
     <NavigationContainer>
       <Tab.Navigator screenOptions={screenOptions}>
