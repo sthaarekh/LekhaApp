@@ -1,12 +1,18 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { View, Text, TouchableOpacity, StyleSheet,SafeAreaView} from 'react-native';
 import { s } from "react-native-wind";
 import AddItemsScreen from './AddItemsScreen';
 import ViewScreen from './ViewScreen';
+import SplashScreen from 'react-native-splash-screen';
 
 const HomeScreen = () => {
   const [currentScreen, setCurrentScreen] = useState('add'); // 'add' or 'view'
-
+  useEffect(() => {
+    setTimeout(() => {
+    SplashScreen.hide();
+    },500)
+  }, [])
+  
   return (
     <SafeAreaView style={s`flex-1 bg-white`}>
     <View style={s`flex-row bg-white shadow shadow-black shadow-opacity-10 shadow-radius-2 elevation-2`}>

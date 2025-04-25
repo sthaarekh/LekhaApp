@@ -129,6 +129,6 @@ const styles = StyleSheet.create({
       backgroundColor: "#ACBE6F",
     },
     borderbg:{
-        borderColor: 'blue'
+        borderColor: 'green'
     }
   });
