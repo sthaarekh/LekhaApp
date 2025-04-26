@@ -31,8 +31,7 @@ const HomeScreen = () => {
     </View>
 
     {currentScreen === 'add' ? (
-      // <AddItemsScreen onItemAdded={() => setCurrentScreen('view')} />
-      <AddItemsScreen/>
+      <AddItemsScreen onItemAdded={() => setCurrentScreen('view')} />
     ) : (
       <ViewScreen/>
     )}

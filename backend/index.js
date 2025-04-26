@@ -27,7 +27,7 @@ export const createTable=()=>{
 export const insertData=(category, description, amount, mode, callback)=>{
     db.transaction((tx)=>{
         tx.executeSql(
-            'INSERT INTO userrec (category, description, amount, payment_mode) VALUES (?, ?, ?, ?)',
+            'INSERT INTO expenseRec (category, description, amount, payment_mode) VALUES (?, ?, ?, ?)',
             [category, description, parseFloat(amount), mode],
             (tx, results) => {
                 if (results.rowsAffected > 0) {

@@ -1,8 +1,14 @@
-import { View, Text, TextInput, TouchableOpacity, Modal, SafeAreaView, FlatList, StyleSheet } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, Modal, SafeAreaView, FlatList, StyleSheet, Alert } from 'react-native'
 import { s } from "react-native-wind";
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
+import { createTable, insertData } from '../../backend';
 
-const AddItemsScreen = () => {
+const AddItemsScreen = ({onItemAdded}) => {
+    useEffect(() => {
+      createTable();
+    }, [])
+    
+
     const [amount, setAmount] = useState('');
     const [description, setDescription] = useState('');
     const [category, setCategory] = useState('Category');
@@ -15,7 +21,41 @@ const AddItemsScreen = () => {
     const modes = ['Mode','Self','Others'];
 
     const handleAddItem=()=>{
+      if (!amount || category === 'Category' || mode === 'Mode') {
+        Alert.alert('Missing Information', 'Please fill in all required fields');
+        return;
+      }
 
+      insertData(category, description, amount, mode, (success) => {
+        if (success) {
+          Alert.alert('Success','Item added successfully!',
+            [
+              {
+              text: 'Add Another',
+                onPress: () => {
+                  // Clear form
+                  setAmount('');
+                  setDescription('');
+                  setCategory('Category');
+                  setMode('Mode');
+                },
+                style: 'cancel',
+              },
+              { 
+                text: 'View All', 
+                onPress: () => {
+                  // Clear form and switch to view screen
+                  setAmount('');
+                  setDescription('');
+                  setCategory('Category');
+                  setMode('Mode');
+                  if (onItemAdded) onItemAdded();
+                } 
+              },
+            ]
+          );
+        }
+      });
     }
     
 
@@ -63,7 +103,7 @@ const AddItemsScreen = () => {
 
         <View style={s`flex-row mb-4 justify-between`}>
             <TextInput
-            style={[s`flex-1 h-12 border rounded-lg px-3 bg-white mr-2 text-black`,styles.borderbg]}
+            style={[s`flex-1 h-12 border rounded-lg px-3 bg-white mr-2 text-black`]}
             placeholder="Amount"
             placeholderTextColor="#777"
             value={amount}
@@ -93,9 +133,8 @@ const AddItemsScreen = () => {
         </View>
 
         <TouchableOpacity 
-            style={s`bg-[#a3b9c9] h-12 rounded-lg items-center justify-center mt-2`}
-            onPress={handleAddItem}
-        >
+            style={[s` h-12 rounded-lg items-center justify-center mt-2`,styles.bg]}
+            onPress={handleAddItem}>
             <Text style={s`text-white font-bold text-base`}>Add Expense</Text>
         </TouchableOpacity>
 
