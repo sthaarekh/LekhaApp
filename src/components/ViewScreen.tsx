@@ -1,10 +1,60 @@
 import { View, Text } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
+import { s } from "react-native-wind";
 
 const ViewScreen = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const item ={
+    'category': 'Food',
+    'amount' : 100,
+    'description': 'Khana',
+    'timestamp' : '12:10',
+    'payment_mode': 'Self',
+  }
+  const renderExpenseItem = () => (
+    <View style={s`bg-white p-4 mb-4 rounded-lg shadow`}>
+      <View style={s`flex-row justify-between items-center mb-2`}>
+        <View style={s`bg-blue-100 px-3 py-1 rounded-full`}>
+          <Text style={s`text-blue-600 text-sm font-semibold`}>{item.category}</Text>
+        </View>
+        <Text style={s`text-green-600 font-bold text-lg`}>Rs.{item.amount}</Text>
+      </View>
+
+      <Text style={s`text-gray-600 mb-2`}>{item.description || 'No description'}</Text>
+
+      <View style={s`flex-row justify-between items-center`}>
+        <Text style={s`text-gray-400 text-xs`}>{item.timestamp}</Text>
+        <View style={s`bg-green-100 px-3 py-1 rounded-full`}>
+          <Text style={s`text-green-600 text-xs font-semibold`}>{item.payment_mode}</Text>
+        </View>
+      </View>
+
+    </View>
+  );
+
+
   return (
-    <View>
-      <Text>ViewScreen</Text>
+    <View style={s`flex-1 bg-gray-100 p-4`}>
+      <View style={s`bg-white p-4 rounded-lg shadow mb-4`}>
+        <Text style={s`text-xl font-bold text-gray-800 mb-1`}>Expense Summary</Text>
+        <Text style={s`text-2xl font-bold text-green-600 mb-1`}>Rs.</Text>
+        <Text style={s`text-gray-500`}> transactions</Text>
+      </View>
+
+      <Text style={s`text-lg font-semibold text-gray-700 mb-2`}>Recent Expenses</Text>
+
+      {isLoading ? (
+        <View style={s`flex-1 justify-center items-center`}>
+          <Text style={s`text-gray-500`}>Loading expenses...</Text>
+        </View>
+      ) : false ? (
+        <View style={s`flex-1 justify-center items-center`}>
+          <Text style={s`text-gray-500`}>No expenses added yet</Text>
+        </View>
+      ):(
+        renderExpenseItem()
+      // <View>Hello</View>
+      )}
     </View>
   )
 }
