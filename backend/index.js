@@ -45,3 +45,29 @@ export const insertData=(category, description, amount, mode, callback)=>{
         )
     })
 }
+
+export const getData=(callback)=>{
+    db.transaction((tx)=>{
+        tx.executeSql(
+            'SELECT * FROM expenseRec ORDER BY timestamp DESC',
+            [],
+            (tx, results) => {
+              const temp = []
+              let total = 0
+              
+              for (let i = 0; i < results.rows.length; i++) {
+                const item = results.rows.item(i)
+                temp.push(item)
+                total += parseFloat(item.amount || 0)
+              }
+              
+              callback(temp, total)
+            },
+            error => {
+              console.error('Error fetching expenses:', error)
+              Alert.alert('Error', 'Failed to load expenses')
+              callback([], 0);
+            }
+          )
+    })
+}
