@@ -17,7 +17,7 @@ const AddItemsScreen = ({onItemAdded}) => {
     const [categoryModalVisible, setCategoryModalVisible] = useState(false);
     const [modeModalVisible, setModeModalVisible] = useState(false);
     
-    const categories = ['Food','Transportation','Entertainment','Shopping','Bills','Health','Education','Other'];
+    const categories = ['Food','Education','Housing','Health', 'Transportation','Entertainment','Other'];
     const modes = ['Mode','Self','Others'];
 
     const handleAddItem=()=>{

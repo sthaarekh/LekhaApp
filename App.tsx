@@ -5,6 +5,7 @@ import HomeScreen from './src/components/HomeScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AnalyticsScreen from './src/components/AnalyticsScreen';
 
 
 const tabConfig=[
@@ -16,8 +17,8 @@ const tabConfig=[
     iconComponent: Ionicons
   },
   {
-    name:"Profile",
-    component: HomeScreen,
+    name:"Analytics",
+    component: AnalyticsScreen,
     focusedIcon: 'settings',
     unFocusedIcon: 'settings-outline',
     iconComponent: Ionicons,
