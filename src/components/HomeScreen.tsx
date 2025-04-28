@@ -79,13 +79,33 @@ const HomeScreen = ({ navigation }) => {
     },
   ];
 
-  // Tips data
   const tips = [
     "Track daily expenses to build better financial habits",
     "Create a monthly budget and stick to it",
     "Save at least 20% of your income each month",
-    "Review your spending patterns weekly"
+    "Review your spending patterns weekly",
+    "Set financial goals and review progress regularly",
+    "Avoid impulse buying by creating a shopping list before going out",
+    "Use cash for discretionary spending to stay within your budget",
+    "Automate savings and bills payments to ensure consistency",
+    "Use expense categories to track where most of your money is going",
+    "Look for subscription services you no longer need and cancel them",
+    "Track small purchases—small amounts add up over time",
+    "Review your bank statements monthly for unauthorized charges",
+    "Use rewards or cashback offers to make your spending more rewarding",
+    "Shop around for better deals on recurring expenses (e.g., insurance, utilities)",
+    "Cut back on dining out and cook at home more often",
+    "Use a separate account for savings to avoid spending it by mistake",
+    "Take advantage of discounts, sales, and offers for planned purchases",
+    "Consider setting up an emergency fund to cover unexpected expenses",
+    "Invest in tools or apps that help you analyze and optimize your spending",
+    "Use cash envelopes for certain categories to limit overspending",
+    "Pay off high-interest debts first to reduce long-term financial burden",
+    "Check if your credit card offers rewards or points you can redeem for savings",
+    "Be mindful of your lifestyle inflation and keep spending in check as your income grows",
+    "Set up reminders for important payment dates to avoid late fees"
   ];
+  
 
   return (
     <SafeAreaView style={s`flex-1 bg-white`}>
@@ -183,33 +203,8 @@ const HomeScreen = ({ navigation }) => {
               <Text style={s`text-lg mr-2`}>💡</Text>
               <Text style={s`text-white font-bold text-lg`}>Tip of the Day</Text>
             </View>
-            <Text style={s`text-white`}>{tips[Math.floor(Math.random() * tips.length)]}</Text>
+            <Text style={s`text-white ml-2`}>{tips[Math.floor(Math.random() * tips.length)]}</Text>
           </View>
-
-          {/* Budget Overview */}
-          {/* <Text style={s`text-lg font-semibold text-gray-800 mb-3`}>Monthly Overview</Text>
-          <View style={s`bg-gray-50 rounded-xl p-5 mb-6`}>
-            <View style={s`flex-row justify-between items-center mb-4`}>
-              <Text style={s`text-gray-600`}>Budget Status</Text>
-              <View style={s`flex-row items-center`}>
-                <Text style={s`text-gray-800 font-bold`}>{Math.min(totalAmount / 10000 * 100, 100).toFixed(0)}%</Text>
-                <Text style={s`text-gray-500 ml-1`}>of Rs. 10,000</Text>
-              </View>
-            </View>
-            
-            <View style={s`h-3 bg-gray-200 rounded-full overflow-hidden mb-1`}>
-              <View 
-                style={[
-                  s`h-full bg-indigo-500 rounded-full`, 
-                  { width: `${Math.min(totalAmount / 10000 * 100, 100)}%` }
-                ]} 
-              />
-            </View>
-            
-            <Text style={s`text-xs text-gray-500 text-right`}>
-              {totalAmount >= 10000 ? 'Budget exceeded' : `Rs. ${(10000 - totalAmount).toLocaleString()} remaining`}
-            </Text>
-          </View> */}
         </View>
       </ScrollView>
     </SafeAreaView>
