@@ -91,12 +91,11 @@ const HomeScreen = ({ navigation }) => {
     <SafeAreaView style={s`flex-1 bg-white`}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
       <ScrollView>
-        {/* Header with Logo */}
-        <View style={s`flex-row justify-between items-center p-4 border-b border-gray-100`}>
+        <View style={s`flex-row justify-between items-center p-2 border-b border-gray-100`}>
           <View>
             <View style={s`flex-row items-center`}>
-              <Image source={Logo} style={[s`ml-2 mr-2`, { width: 50, height: 50 }]} resizeMode="contain"/>
-              <Text style={[s`text-4xl font-bold`, { color: 'rgb(174, 190, 111)' }]}>लेखा</Text>
+              <Image source={Logo} style={[s`ml-2 mr-2`, { width: 30, height: 30 }]} resizeMode="contain" />
+              <Text style={[s`text-2xl font-bold`, { color: 'rgb(174, 190, 111)' }]}>लेखा</Text>
             </View>
             <Text style={s`text-gray-500 ml-3 text-xs mt-1`}>A Personalized Expense Manager</Text>
           </View>
