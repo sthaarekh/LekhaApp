@@ -4,6 +4,7 @@ import { getExpensePercent } from '../../backend/capital';
 import { getData } from '../../backend';
 import { s } from "react-native-wind";
 import PieChart from 'react-native-pie-chart';
+import { useFocusEffect } from '@react-navigation/native';
 
 const AnalyticsScreen = () => {
   const [percentages, setPercentages] = useState({
@@ -18,46 +19,48 @@ const AnalyticsScreen = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [totalExpense, setTotalExpense] = useState(0); // Added for showing total
+  const [dataUpdated, setDataUpdated] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        const categories = ['Food', 'Education', 'Housing', 'Health', 'Transportation', 'Entertainment', 'Other'];
-        const newPercentages = {};
-        getData((expenseData, total) => {
-              setTotalExpense(total);
-            });
-        await Promise.all(
-          categories.map(async (category) => {
-            try {
-              const percent = await getExpensePercent(category);
-              newPercentages[category.toLowerCase()] = percent;
-            } catch (err) {
-              console.error(`Error fetching ${category} percentage:`, err);
-              newPercentages[category.toLowerCase()] = 0;
-            }
-          })
-        );
-        
-        Object.keys(newPercentages).forEach(key => {
-          if (isNaN(newPercentages[key]) || newPercentages[key] === undefined) {
-            newPercentages[key] = 0;
-          }
-        });
-        
-        setPercentages(newPercentages);
-      } catch (err) {
-        console.error('Error in data fetching:', err);
-        setError('Failed to load expense data');
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  useFocusEffect(
     
-    fetchData();
-  }, []);
-
+    React.useCallback(() => {
+      const fetchData = async () => {
+        try {
+          setIsLoading(true);
+          const categories = ['Food', 'Education', 'Housing', 'Health', 'Transportation', 'Entertainment', 'Other'];
+          const newPercentages = {};
+          getData((expenseData, total) => {
+                setTotalExpense(total);
+              });
+          await Promise.all(
+            categories.map(async (category) => {
+              try {
+                const percent = await getExpensePercent(category);
+                newPercentages[category.toLowerCase()] = percent;
+              } catch (err) {
+                console.error(`Error fetching ${category} percentage:`, err);
+                newPercentages[category.toLowerCase()] = 0;
+              }
+            })
+          );
+          
+          Object.keys(newPercentages).forEach(key => {
+            if (isNaN(newPercentages[key]) || newPercentages[key] === undefined) {
+              newPercentages[key] = 0;
+            }
+          });
+          
+          setPercentages(newPercentages);
+        } catch (err) {
+          console.error('Error in data fetching:', err);
+          setError('Failed to load expense data');
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      fetchData(); // Your data fetching function
+    }, [])
+  );
   // Updated color scheme for a more professional finance app look
   const categoryDetails = [
     { key: 'food', label: 'Food & Dining', color: '#FF6B6B', icon: '🍔' },
@@ -123,8 +126,8 @@ const AnalyticsScreen = () => {
                     <PieChart
                       widthAndHeight={250}
                       series={series}
-                      coverRadius={0.55}
-                      coverFill="#FFF"
+                      cover={0.6}
+                      padAngle={0.04}
                     />
                   </View>
                 </View>
