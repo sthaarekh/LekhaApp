@@ -1,17 +1,27 @@
-import { View, Text } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, FlatList } from 'react-native'
+import React, { useState, useEffect } from 'react'
 import { s } from "react-native-wind";
+import { getData } from '../../backend';
 
 const ViewScreen = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const item ={
-    'category': 'Food',
-    'amount' : 100,
-    'description': 'Khana',
-    'timestamp' : '12:10',
-    'payment_mode': 'Self',
-  }
-  const renderExpenseItem = () => (
+  const [isLoading, setIsLoading] = useState(true);
+  const [expenses, setExpenses] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0);
+
+  useEffect(() => {
+    loadExpenses();
+  }, [])
+  
+  const loadExpenses = () => {
+    setIsLoading(true);
+    getData((expenseData, total) => {
+      setExpenses(expenseData);
+      setTotalAmount(total);
+      setIsLoading(false);
+    });
+  };
+
+  const renderExpenseItem = ({item}) => (
     <View style={s`bg-white p-4 mb-4 rounded-lg shadow`}>
       <View style={s`flex-row justify-between items-center mb-2`}>
         <View style={s`bg-blue-100 px-3 py-1 rounded-full`}>
@@ -37,8 +47,8 @@ const ViewScreen = () => {
     <View style={s`flex-1 bg-gray-100 p-4`}>
       <View style={s`bg-white p-4 rounded-lg shadow mb-4`}>
         <Text style={s`text-xl font-bold text-gray-800 mb-1`}>Expense Summary</Text>
-        <Text style={s`text-2xl font-bold text-green-600 mb-1`}>Rs.</Text>
-        <Text style={s`text-gray-500`}> transactions</Text>
+        <Text style={s`text-2xl font-bold text-green-600 mb-1`}>Rs.{totalAmount}</Text>
+        <Text style={s`text-gray-500`}>{expenses.length} transactions</Text>
       </View>
 
       <Text style={s`text-lg font-semibold text-gray-700 mb-2`}>Recent Expenses</Text>
@@ -52,7 +62,15 @@ const ViewScreen = () => {
           <Text style={s`text-gray-500`}>No expenses added yet</Text>
         </View>
       ):(
-        renderExpenseItem()
+        <FlatList
+        data={expenses}
+        renderItem={renderExpenseItem}
+        keyExtractor={(item) => item.id.toString()}
+        contentContainerStyle={{ paddingBottom: 20 }}
+        refreshing={isLoading}
+        onRefresh={loadExpenses}
+        showsVerticalScrollIndicator={false}
+      />
       // <View>Hello</View>
       )}
     </View>
