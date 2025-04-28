@@ -4,6 +4,7 @@ import { s } from "react-native-wind";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Logo from '../images/logo.png';
 import { getData } from '../../backend';
+import { useFocusEffect } from '@react-navigation/native';
 
 const HomeScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -12,19 +13,20 @@ const HomeScreen = ({ navigation }) => {
   const [username, setUsername] = useState('User');
   const [recentTransactions, setRecentTransactions] = useState([]);
 
-  useEffect(() => {
-    loadExpenses();
-  }, []);
-
-  const loadExpenses = () => {
-    setIsLoading(true);
-    getData((expenseData, total) => {
-      setExpenses(expenseData);
-      setTotalAmount(total);
-      setRecentTransactions(expenseData.slice(0, 3)); // Get the 3 most recent transactions
-      setIsLoading(false);
-    });
-  };
+  useFocusEffect(
+    React.useCallback(() => {
+      const loadExpenses = () => {
+        setIsLoading(true);
+        getData((expenseData, total) => {
+          setExpenses(expenseData);
+          setTotalAmount(total);
+          setRecentTransactions(expenseData.slice(0, 3)); // Get the 3 most recent transactions
+          setIsLoading(false);
+        });
+      };
+        loadExpenses(); // Your data fetching function
+        }, [])
+  )
 
   // Get category icon
   const getCategoryIcon = (category) => {
