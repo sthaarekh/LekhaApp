@@ -1,7 +1,7 @@
 import { View, Text, FlatList } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { s } from "react-native-wind";
-import { getData } from '../../backend';
+import { getData, formatDate } from '../../backend';
 
 const ViewScreen = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -33,7 +33,7 @@ const ViewScreen = () => {
       <Text style={s`text-gray-600 mb-2`}>{item.description || 'No description'}</Text>
 
       <View style={s`flex-row justify-between items-center`}>
-        <Text style={s`text-gray-400 text-xs`}>{item.timestamp}</Text>
+        <Text style={s`text-gray-400 text-xs`}>{formatDate(item.timestamp)}</Text>
         <View style={s`bg-green-100 px-3 py-1 rounded-full`}>
           <Text style={s`text-green-600 text-xs font-semibold`}>{item.payment_mode}</Text>
         </View>
