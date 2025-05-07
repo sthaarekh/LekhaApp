@@ -2,6 +2,7 @@ import { View, Text, TextInput, TouchableOpacity, Modal, SafeAreaView, FlatList,
 import { s } from "react-native-wind";
 import React, {useEffect, useState} from 'react';
 import { createTable, insertData } from '../../backend';
+import CustomAlert from './CustomAlert';
 
 const AddItemsScreen = ({onItemAdded}) => {
   useEffect(() => {
@@ -18,6 +19,20 @@ const AddItemsScreen = ({onItemAdded}) => {
   const categories = ['Food', 'Education', 'Housing', 'Health', 'Transportation', 'Entertainment', 'Other'];
   const modes = ['Self','Other'];
 
+   // Custom Alert States
+   const [alertVisible, setAlertVisible] = useState(false);
+   const [alertConfig, setAlertConfig] = useState({
+     title: '',
+     message: '',
+     icon: '',
+     buttons: []
+   });
+
+   const showAlert = (config) => {
+    setAlertConfig(config);
+    setAlertVisible(true);
+  };
+
   const getCategoryIcon = (category) => {
     const icons = {
       'Food': '🍔',
@@ -31,6 +46,7 @@ const AddItemsScreen = ({onItemAdded}) => {
     
     return icons[category] || '💰';
   };
+
   
   const getPaymentIcon = (mode) => {
     const icons = {
@@ -42,44 +58,62 @@ const AddItemsScreen = ({onItemAdded}) => {
 
   const handleAddItem = () => {
     if (Number(amount) < 0) {
-      Alert.alert('Amount is negative');
+      showAlert({
+        title: 'Invalid Amount',
+        message: 'Amount cannot be negative. Please enter a positive value.',
+        icon: '❌',
+        buttons: [
+          { text: 'OK', primary: true, onPress: () => setAlertVisible(false) }
+        ]
+      });
       return;
     }
     if (!amount || category === 'Category' || mode === 'Payment Method') {
-      Alert.alert('Missing Information', 'Please fill in all required fields');
+      showAlert({
+        title: 'Missing Information',
+        message: 'Please fill in all required fields to continue.',
+        icon: '⚠️',
+        buttons: [
+          { text: 'OK', primary: true, onPress: () => setAlertVisible(false) }
+        ]
+      });
       return;
     }
     
     insertData(category, description, amount, mode, (success) => {
       if (success) {
-        Alert.alert(
-          'Success',
-          'Expense added successfully!',
-          [
-            {
-              text: 'Add Another',
+        showAlert({
+          title: 'Expense Added!',
+          message: `Rs. ${amount} has been added to your ${category} expenses.`,
+          icon: getCategoryIcon(category),
+          buttons: [
+            { 
+              text: 'Add Another', 
               onPress: () => {
+                setAlertVisible(false);
                 // Clear form
                 setAmount('');
                 setDescription('');
                 setCategory('Category');
                 setMode('Payment Method');
               },
-              style: 'cancel',
+              primary: false
             },
             {
               text: 'View All',
               onPress: () => {
+                setAlertVisible(false);
                 // Clear form and switch to view screen
                 setAmount('');
                 setDescription('');
                 setCategory('Category');
                 setMode('Payment Method');
                 if (onItemAdded) onItemAdded();
-              }
-            },
+              },
+              primary: true
+            }
           ]
-        );
+        });
       }
     });
   };
@@ -210,6 +244,15 @@ const AddItemsScreen = ({onItemAdded}) => {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
+
+       {/* Custom Alert Modal */}
+       <CustomAlert
+        visible={alertVisible}
+        title={alertConfig.title}
+        message={alertConfig.message}
+        icon={alertConfig.icon}
+        buttons={alertConfig.buttons}
+      />
       
       <SelectionModal
         visible={categoryModalVisible}
