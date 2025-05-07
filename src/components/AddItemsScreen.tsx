@@ -41,6 +41,10 @@ const AddItemsScreen = ({onItemAdded}) => {
   };
 
   const handleAddItem = () => {
+    if (Number(amount) < 0) {
+      Alert.alert('Amount is negative');
+      return;
+    }
     if (!amount || category === 'Category' || mode === 'Payment Method') {
       Alert.alert('Missing Information', 'Please fill in all required fields');
       return;
